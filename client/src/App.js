@@ -1,23 +1,17 @@
-import logo from './logo.svg';
+// client/src/App.js
+
+import React, { useState } from 'react';
 import './App.css';
+import TrafficLight from './components/TrafficLight';
+import ControlPanel from './components/ControlPanel';
 
 function App() {
+  const [status, setStatus] = useState('stop');
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <TrafficLight status={status} />
+      <ControlPanel setStatus={setStatus} />
     </div>
   );
 }
