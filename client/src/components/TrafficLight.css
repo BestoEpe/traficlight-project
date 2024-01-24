@@ -27,6 +27,23 @@
   padding: 10px 0;
 }
 
+@keyframes flicker {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.light.yellow.flickering {
+  animation: flicker 1s infinite;
+}
+
+
 .light {
   width: 30px;
   height: 30px;
