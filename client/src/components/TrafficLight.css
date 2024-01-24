@@ -1,33 +1,53 @@
-/* client/src/components/TrafficLight.css */
+/* TrafficLight.css */
+.traffic-light-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
+  
 .traffic-light {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .bulb {
-    width: 50px;
-    height: 50px;
-    background-color: #333;
-    border-radius: 50%;
-    margin: 10px;
-    opacity: 0.4;
-  }
-  
-  .bulb.active {
-    opacity: 1;
-  }
-  
-  .red.active {
-    background-color: red;
-  }
-  
-  .yellow.active {
-    background-color: yellow;
-  }
-  
-  .green.active {
-    background-color: green;
-  }
-  
+  width: 40px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(61, 59, 59);
+  border: 2px solid #000;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.light-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.light {
+  width: 30px;
+  height: 30px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  margin: 5px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.light.red {
+  background-color: red;
+}
+
+.light.yellow {
+  background-color: yellow;
+}
+
+.light.green {
+  background-color: green;
+}
+
+.light:not(.active) {
+  background-color: grey; /* Make the lights that are not active grey */
+}
