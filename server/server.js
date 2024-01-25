@@ -1,34 +1,47 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const TrafficLight = require('./models/TrafficLight'); // Adjust the path to your TrafficLight model
+const TrafficLight = require('./models/TrafficLight'); // Assuming this is your model
 require('dotenv').config();
-const cors = require('cors'); // Import the cors middleware
+const cors = require('cors');
 
 const app = express();
 app.use(bodyParser.json());
-
-// Enable CORS with specific options
 app.use(cors({
-  origin: 'http://localhost:3000', // Replace with your client's URL
+  origin: 'http://localhost:3000',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true, // Allow cookies and credentials to be sent cross-origin
+  credentials: true,
 }));
 
-// Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-// POST route to update a specific traffic light's status
+// Endpoint to retrieve the last saved state (color and mode)
+app.get('/api/traffic-lights/:lightId', async (req, res) => {
+  const { lightId } = req.params;
+
+  try {
+    const trafficLight = await TrafficLight.findOne({ lightId });
+    if (trafficLight) {
+      res.status(200).json({ color: trafficLight.color, mode: trafficLight.mode });
+    } else {
+      res.status(404).json({ message: 'Traffic light not found' });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// POST route to handle both color and mode
 app.post('/api/traffic-lights/:lightId/update', async (req, res) => {
   const { lightId } = req.params;
-  const { color } = req.body;
+  const { color, mode } = req.body;
 
   try {
     const updatedLight = await TrafficLight.findOneAndUpdate(
       { lightId },
-      { color },
+      { color, mode },
       { new: true, upsert: true }
     );
     res.json(updatedLight);
@@ -37,5 +50,5 @@ app.post('/api/traffic-lights/:lightId/update', async (req, res) => {
   }
 });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 app.listen(port, () => console.log(`Server running on port ${port}`));
