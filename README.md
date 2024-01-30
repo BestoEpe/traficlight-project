@@ -3,22 +3,25 @@
 
 
 
-Komponentit
-Frontend (React)
+### Komponentit
 
-TrafficLight.js: Tämä komponentti edustaa liikennevaloja ja niiden ohjauspaneelia. Se hallitsee liikennevalojen näyttöä, värin vaihtamista, tilan valintaa (manuaalinen, normaali, vilkkuminen, aikaperusteinen) ja viestintää taustajärjestelmän kanssa tilan päivittämiseksi.
-Taustajärjestelmä (Node.js Expressillä)
+**Frontend (React)**
+- **TrafficLight.js**: Tämä komponentti edustaa liikennevaloja ja niiden ohjauspaneelia. Se hallitsee liikennevalojen näyttöä, värin vaihtamista, tilan valintaa (manuaalinen, normaali, vilkkuminen, aikaperusteinen) ja viestintää taustajärjestelmän kanssa tilan päivittämiseksi.
 
-server.js: Tämä on taustajärjestelmäpalvelin, joka vastaa HTTP-pyyntöjen käsittelystä ja vuorovaikutuksesta tietokannan kanssa. Se tarjoaa API-päätöspisteet viimeksi tallennetun tilan hakemiseen, liikennevalon tilan päivittämiseen ja aikaperusteisen tilan asettamiseen.
-Tietokanta (MongoDB)
+**Taustajärjestelmä (Node.js Expressillä)**
+- **server.js**: Tämä on taustajärjestelmäpalvelin, joka vastaa HTTP-pyyntöjen käsittelystä ja vuorovaikutuksesta tietokannan kanssa. Se tarjoaa API-päätöspisteet viimeksi tallennetun tilan hakemiseen, liikennevalon tilan päivittämiseen ja aikaperusteisen tilan asettamiseen.
 
-MongoDB:ta käytetään tietokantana liikennevalojen tilan tallentamiseen. Se tallentaa tietoja, kuten nykyisen värin, tilan (manuaalinen, normaali, vilkkuminen, aikaperusteinen) ja aikasetukset aikaperusteiselle tilalle.
-Käytetyt ohjelmistot
-Node.js: Node.jsia käytetään palvelinpuolen skriptaukseen ja taustapalvelimen suorittamiseen.
-Express.js: Express.js on Node.js-verkkosovelluskehys, jota käytetään taustan API-päätöspisteiden luomiseen.
-React: React on JavaScript-kirjasto, jota käytetään frontend-käyttöliittymän rakentamiseen.
-MongoDB: MongoDB on NoSQL-tietokanta, jota käytetään liikennevalojen tilan tallentamiseen ja hallintaan.
-Mongoose: Mongoose on objektien tiedonmallinnus (ODM) -kirjasto MongoDB:lle, ja sitä käytetään tietoskeeman määrittämiseen ja tietokannan kanssa vuorovaikutukseen.
+**Tietokanta (MongoDB)**
+- MongoDB:ta käytetään tietokantana liikennevalojen tilan tallentamiseen. Se tallentaa tietoja, kuten nykyisen värin, tilan (manuaalinen, normaali, vilkkuminen, aikaperusteinen) ja aikasetukset aikaperusteiselle tilalle.
+
+### Käytetyt ohjelmistot
+
+- **Node.js**: Node.jsia käytetään palvelinpuolen skriptaukseen ja taustapalvelimen suorittamiseen.
+- **Express.js**: Express.js on Node.js-verkkosovelluskehys, jota käytetään taustan API-päätöspisteiden luomiseen.
+- **React**: React on JavaScript-kirjasto, jota käytetään frontend-käyttöliittymän rakentamiseen.
+- **MongoDB**: MongoDB on NoSQL-tietokanta, jota käytetään liikennevalojen tilan tallentamiseen ja hallintaan.
+- **Mongoose**: Mongoose on objektien tiedonmallinnus (ODM) -kirjasto MongoDB:lle, ja sitä käytetään tietoskeeman määrittämiseen ja tietokannan kanssa vuorovaikutukseen.
+
 
 
 
