@@ -33,22 +33,28 @@ app.get('/api/traffic-lights/:lightId', async (req, res) => {
   }
 });
 
-// POST route to handle both color and mode
 app.post('/api/traffic-lights/:lightId/update', async (req, res) => {
   const { lightId } = req.params;
-  const { color, mode } = req.body;
+  const { color, mode, timeOffStart, timeOffEnd } = req.body;
+
+  console.log('Request Body:', req.body); 
 
   try {
     const updatedLight = await TrafficLight.findOneAndUpdate(
       { lightId },
-      { color, mode },
+      { color, mode, timeOffStart, timeOffEnd },
       { new: true, upsert: true }
     );
+
+    console.log('Updated Light:', updatedLight); 
+
     res.json(updatedLight);
   } catch (err) {
+    console.error('Error updating traffic light:', err);
     res.status(500).json({ message: err.message });
   }
 });
+
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => console.log(`Server running on port ${port}`));
