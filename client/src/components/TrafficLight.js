@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import './TrafficLight.css';
-import { fetchState, updateState, setTrafficLightTimeMode } from './TrafficStateHandler';
-import { startNormalMode, startFlickeringMode, startTimeMode } from './TrafficModes'; // Import the startTimeMode function
+import { fetchState, updateState } from './TrafficStateHandler';
+import { startNormalMode, startFlickeringMode } from './TrafficModes';
 
 const TrafficLight = ({ lightId }) => {
   const [color, setColor] = useState('off');
-  const [mode, setMode] = useState(null);
+  const [mode, setMode] = useState('manual');
   const [intervalId, setIntervalId] = useState(null);
   const [isDataFetched, setIsDataFetched] = useState(false);
-  const [timeOffStart, setTimeOffStart] = useState('');
-  const [timeOffEnd, setTimeOffEnd] = useState('');
+  const [sliderValue, setSliderValue] = useState(0);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [remainingTime, setRemainingTime] = useState(0);
 
   useEffect(() => {
     fetchState(lightId).then(data => {
       if (data) {
         setColor(data.color || 'off');
         setMode(data.mode || 'manual');
-        setTimeOffStart(data.timeOffStart || '');
-        setTimeOffEnd(data.timeOffEnd || '');
+        setSelectedTime(data.selectedTime || null);
+        setRemainingTime(data.selectedTime || 0); // Set remaining time based on data
+        if (data.selectedTime && data.mode === 'time') {
+          startTimer(data.selectedTime);
+        }
       }
       setIsDataFetched(true);
     }).catch(error => {
@@ -35,24 +39,21 @@ const TrafficLight = ({ lightId }) => {
     } else if (mode === 'flickering') {
       const newIntervalId = startFlickeringMode(setColor, setMode, lightId, updateState);
       setIntervalId(newIntervalId);
-    } else if (mode === 'time') {
-      // Start the "time mode" interval
-      const newIntervalId = startTimeMode(setColor, setMode, lightId, updateState, timeOffStart, timeOffEnd);
-      setIntervalId(newIntervalId);
     } else if (mode === 'manual') {
       setColor(color);
+    } else if (mode === 'time' && remainingTime > 0) {
+      startTimer(remainingTime);
+    } else if (mode === 'time' && remainingTime === 0) {
+      setMode('normal');
+      setRemainingTime(0);
     }
-  }, [mode, isDataFetched, color, lightId, timeOffStart, timeOffEnd]); // Include timeOffStart and timeOffEnd in the dependency array
-
-  if (!isDataFetched) {
-    return <div>Loading...</div>;
-  }
+  }, [mode, isDataFetched, color, lightId, selectedTime, remainingTime]);
 
   const handleChangeColor = (newColor) => {
     if (intervalId) clearInterval(intervalId);
     setColor(newColor);
     setMode('manual');
-    updateState(lightId, newColor, 'manual', null, null);
+    updateState(lightId, newColor, 'manual');
   };
 
   const handleSetMode = (newMode) => {
@@ -69,20 +70,45 @@ const TrafficLight = ({ lightId }) => {
     }
   };
 
-  const handleSetTimeMode = () => {
-    if (intervalId) clearInterval(intervalId);
+  const handleSliderChange = (event) => {
+    const value = parseInt(event.target.value);
+    setSliderValue(value);
+  };
 
-    // Ensure both time values are set before sending to the server
-    if (timeOffStart && timeOffEnd) {
-      setTrafficLightTimeMode(lightId, timeOffStart, timeOffEnd)
-        .then(() => {
-          setMode('time');
-          setColor('off'); // Reset color when switching to time-based mode
-        })
-        .catch(error => console.error('Error setting time-based mode:', error));
-    } else {
-      console.error('Please set both start and end times for time-based mode.');
+  const sendSelectedTimeToDatabase = () => {
+    if (selectedTime !== null) {
+      console.log(`Selected time (${selectedTime} seconds) sent to the database.`);
+      updateState(lightId, color, 'time', selectedTime);
     }
+  };
+
+  const handleConfirmTime = () => {
+    if (sliderValue > 0) {
+      setSelectedTime(sliderValue);
+      setRemainingTime(sliderValue);
+      startTimer(sliderValue);
+      sendSelectedTimeToDatabase();
+    }
+  };
+
+  const startTimer = (seconds) => {
+    if (intervalId) clearInterval(intervalId);
+    setColor('off');
+    setMode('time');
+    setRemainingTime(seconds);
+    const milliseconds = seconds * 1000;
+    const newIntervalId = setInterval(() => {
+      setRemainingTime(prevTime => {
+        const newTime = prevTime - 1;
+        if (newTime === 0) {
+          clearInterval(newIntervalId);
+          setMode('normal');
+        }
+        updateState(lightId, color, 'time', newTime);
+        return newTime;
+      });
+    }, 1000);
+    setIntervalId(newIntervalId);
   };
 
   return (
@@ -105,17 +131,22 @@ const TrafficLight = ({ lightId }) => {
         <button onClick={() => handleSetMode('flickering')}>Flickering</button>
       </div>
       <div className="time-mode-selection">
-        <input
-          type="time"
-          value={timeOffStart}
-          onChange={(e) => setTimeOffStart(e.target.value)}
-        />
-        <input
-          type="time"
-          value={timeOffEnd}
-          onChange={(e) => setTimeOffEnd(e.target.value)}
-        />
-        <button onClick={handleSetTimeMode}>Set Time Mode</button>
+        <div>
+          <input
+            type="range"
+            min="1"
+            max="300"
+            value={sliderValue}
+            onChange={handleSliderChange}
+          />
+          <span>{sliderValue} second(s)</span>
+        </div>
+        <button onClick={handleConfirmTime}>Confirm Time</button>
+        {mode === 'time' && (
+          <div>
+            <p>Time Remaining: {remainingTime} seconds</p>
+          </div>
+        )}
       </div>
     </div>
   );

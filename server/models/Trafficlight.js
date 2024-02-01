@@ -4,8 +4,7 @@ const trafficLightSchema = new mongoose.Schema({
   lightId: String,
   color: String,
   mode: String,
-  timeOffStart: String, 
-  timeOffEnd: String,  
+  selectedTime: Number, 
 });
 
 module.exports = mongoose.model('TrafficLight', trafficLightSchema);

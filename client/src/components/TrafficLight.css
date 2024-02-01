@@ -3,19 +3,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 20px;
 }
 
-  
 .traffic-light {
   width: 40px;
   height: 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgb(61, 59, 59);
-  border: 2px solid #000;
+  background-color: rgba(0, 0, 0, 0.2); /* Semi-transparent background */
+  border: 2px solid #333; /* Darker border */
   border-radius: 10px;
   margin-bottom: 10px;
+  padding: 5px; /* Add some padding for better spacing */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a subtle shadow */
 }
 
 .light-container {
@@ -43,28 +45,109 @@
   animation: flicker 1s infinite;
 }
 
-
 .light {
   width: 30px;
   height: 30px;
-  border: 2px solid #000;
+  border: 2px solid #333; /* Darker border */
   border-radius: 50%;
   margin: 5px;
   transition: transform 0.3s ease-in-out;
 }
 
 .light.red {
-  background-color: red;
+  background-color: #ff6b6b; /* Red color */
 }
 
 .light.yellow {
-  background-color: yellow;
+  background-color: #ffd166; /* Yellow color */
 }
 
 .light.green {
-  background-color: green;
+  background-color: #4caf50; /* Green color */
 }
 
 .light:not(.active) {
-  background-color: grey; /* Make the lights that are not active grey */
+  background-color: #666; /* Dark grey for inactive lights */
+}
+
+.traffic-light-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.traffic-light-controls button {
+  margin: 0 10px;
+  padding: 5px 10px;
+  border: none;
+  background-color: #0077b6; /* Dark blue */
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.traffic-light-controls button:hover {
+  background-color: #023e8a; /* Slightly darker blue on hover */
+}
+
+.mode-selection {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.mode-selection button {
+  margin: 0 10px;
+  padding: 5px 10px;
+  border: none;
+  background-color: #f25f5c; /* Coral color */
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.mode-selection button:hover {
+  background-color: #e84a4a; /* Slightly darker coral on hover */
+}
+
+.time-mode-selection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.time-mode-selection div {
+  display: flex;
+  align-items: center;
+}
+
+.time-mode-selection input[type="range"] {
+  width: 150px;
+  margin-right: 10px;
+}
+
+.time-mode-selection button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  border: none;
+  background-color: #2a9d8f; /* Teal color */
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.time-mode-selection button:hover {
+  background-color: #21867a; /* Slightly darker teal on hover */
+}
+
+/* Timer display */
+.time-mode-selection p {
+  font-size: 18px;
+  margin-top: 10px;
+  color: #333;
+  text-align: center;
 }
