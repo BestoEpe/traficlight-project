@@ -18,7 +18,7 @@ const TrafficLight = ({ lightId }) => {
         setColor(data.color || 'off');
         setMode(data.mode || 'manual');
         setSelectedTime(data.selectedTime || null);
-        setRemainingTime(data.selectedTime || 0); // Set remaining time based on data
+        setRemainingTime(data.selectedTime || 0); 
         if (data.selectedTime && data.mode === 'time') {
           startTimer(data.selectedTime);
         }

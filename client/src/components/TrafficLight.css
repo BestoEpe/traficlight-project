@@ -1,4 +1,4 @@
-/* TrafficLight.css */
+
 .traffic-light-container {
   display: flex;
   flex-direction: column;
@@ -12,12 +12,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.2); /* Semi-transparent background */
-  border: 2px solid #333; /* Darker border */
+  background-color: rgba(0, 0, 0, 0.2); 
+  border: 2px solid #333; 
   border-radius: 10px;
   margin-bottom: 10px;
-  padding: 5px; /* Add some padding for better spacing */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a subtle shadow */
+  padding: 5px; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
 }
 
 .light-container {
@@ -48,26 +48,26 @@
 .light {
   width: 30px;
   height: 30px;
-  border: 2px solid #333; /* Darker border */
+  border: 2px solid #333; 
   border-radius: 50%;
   margin: 5px;
   transition: transform 0.3s ease-in-out;
 }
 
 .light.red {
-  background-color: #ff6b6b; /* Red color */
+  background-color: #ff6b6b; 
 }
 
 .light.yellow {
-  background-color: #ffd166; /* Yellow color */
+  background-color: #ffd166; 
 }
 
 .light.green {
-  background-color: #4caf50; /* Green color */
+  background-color: #4caf50; 
 }
 
 .light:not(.active) {
-  background-color: #666; /* Dark grey for inactive lights */
+  background-color: #666; 
 }
 
 .traffic-light-controls {
@@ -80,7 +80,7 @@
   margin: 0 10px;
   padding: 5px 10px;
   border: none;
-  background-color: #0077b6; /* Dark blue */
+  background-color: #0077b6; 
   color: white;
   cursor: pointer;
   border-radius: 5px;
@@ -88,7 +88,7 @@
 }
 
 .traffic-light-controls button:hover {
-  background-color: #023e8a; /* Slightly darker blue on hover */
+  background-color: #023e8a; 
 }
 
 .mode-selection {
@@ -101,7 +101,7 @@
   margin: 0 10px;
   padding: 5px 10px;
   border: none;
-  background-color: #f25f5c; /* Coral color */
+  background-color: #f25f5c; 
   color: white;
   cursor: pointer;
   border-radius: 5px;
@@ -109,7 +109,7 @@
 }
 
 .mode-selection button:hover {
-  background-color: #e84a4a; /* Slightly darker coral on hover */
+  background-color: #e84a4a; 
 }
 
 .time-mode-selection {
@@ -133,7 +133,7 @@
   margin-top: 10px;
   padding: 5px 10px;
   border: none;
-  background-color: #2a9d8f; /* Teal color */
+  background-color: #2a9d8f; 
   color: white;
   cursor: pointer;
   border-radius: 5px;
@@ -141,10 +141,10 @@
 }
 
 .time-mode-selection button:hover {
-  background-color: #21867a; /* Slightly darker teal on hover */
+  background-color: #21867a; 
 }
 
-/* Timer display */
+
 .time-mode-selection p {
   font-size: 18px;
   margin-top: 10px;
