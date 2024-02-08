@@ -1,4 +1,6 @@
 # traficlight-project
+![trafficlightArc drawio](https://github.com/BestoEpe/traficlight-project/assets/91182619/1129e9b7-6c9c-4922-baa9-363fca598ffb)
+
 
 
 
@@ -6,21 +8,46 @@
 ### Komponentit
 
 **Frontend (React)**
-- **TrafficLight.js**: Tämä komponentti edustaa liikennevaloja ja niiden ohjauspaneelia. Se hallitsee liikennevalojen näyttöä, värin vaihtamista, tilan valintaa (manuaalinen, normaali, vilkkuminen, aikaperusteinen) ja viestintää taustajärjestelmän kanssa tilan päivittämiseksi.
+- **TrafficLight.js**
+- **TrafficModes.js**
+- **TrafficStateHandler.js**
 
-**Taustajärjestelmä (Node.js Expressillä)**
-- **server.js**: Tämä on taustajärjestelmäpalvelin, joka vastaa HTTP-pyyntöjen käsittelystä ja vuorovaikutuksesta tietokannan kanssa. Se tarjoaa API-päätöspisteet viimeksi tallennetun tilan hakemiseen, liikennevalon tilan päivittämiseen ja aikaperusteisen tilan asettamiseen.
+**backend (Node.js Expressillä)**
+- **server.js**
+- **TrafficLight.js**
 
 **Tietokanta (MongoDB)**
-- MongoDB:ta käytetään tietokantana liikennevalojen tilan tallentamiseen. Se tallentaa tietoja, kuten nykyisen värin, tilan (manuaalinen, normaali, vilkkuminen, aikaperusteinen) ja aikasetukset aikaperusteiselle tilalle.
+![image](https://github.com/BestoEpe/traficlight-project/assets/91182619/d9f90860-e15a-4422-8028-329deb720ab6)
+
 
 ### Käytetyt ohjelmistot
 
-- **Node.js**: Node.jsia käytetään palvelinpuolen skriptaukseen ja taustapalvelimen suorittamiseen.
-- **Express.js**: Express.js on Node.js-verkkosovelluskehys, jota käytetään taustan API-päätöspisteiden luomiseen.
-- **React**: React on JavaScript-kirjasto, jota käytetään frontend-käyttöliittymän rakentamiseen.
-- **MongoDB**: MongoDB on NoSQL-tietokanta, jota käytetään liikennevalojen tilan tallentamiseen ja hallintaan.
-- **Mongoose**: Mongoose on objektien tiedonmallinnus (ODM) -kirjasto MongoDB:lle, ja sitä käytetään tietoskeeman määrittämiseen ja tietokannan kanssa vuorovaikutukseen.
+- **Node.js**
+- **Express.js**
+- **React**
+- **MongoDB**
+- **Mongoose**
+
+
+![image](https://github.com/BestoEpe/traficlight-project/assets/91182619/df253aae-480f-4429-a818-afeabf3bfc1a)
+
+
+
+### docker
+install dockerdesktop
+terminaaliin:
+```bash
+docker build -t client . 
+docker build -t server .
+
+```
+
+![image](https://github.com/BestoEpe/traficlight-project/assets/91182619/b317d73d-2462-4f9f-a7e1-eb1c42e50cac)
+
+
+![image](https://github.com/BestoEpe/traficlight-project/assets/91182619/b52bfa17-68ef-4287-9307-f2d525022ccf)
+
+
 
 
 
