@@ -1,6 +1,7 @@
 # traficlight-project
+![trafficlightArc drawio](https://github.com/BestoEpe/traficlight-project/assets/91182619/1129e9b7-6c9c-4922-baa9-363fca598ffb)
 
-![image](https://github.com/BestoEpe/traficlight-project/assets/91182619/df253aae-480f-4429-a818-afeabf3bfc1a)
+
 
 
 
@@ -26,6 +27,9 @@
 - **React**
 - **MongoDB**
 - **Mongoose**
+
+
+![image](https://github.com/BestoEpe/traficlight-project/assets/91182619/df253aae-480f-4429-a818-afeabf3bfc1a)
 
 
 
