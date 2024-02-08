@@ -27,4 +27,3 @@ export function startFlickeringMode(setColor, setMode, lightId, updateState) {
   return intervalId;
 }
 
-

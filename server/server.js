@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const TrafficLight = require('./models/TrafficLight');
+const TrafficLight = require('./Trafficlight.js');
 require('dotenv').config();
 const cors = require('cors');
 
