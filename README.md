@@ -40,7 +40,8 @@ terminaaliin:
 docker build -t client . 
 docker build -t server .
 
-```bash
+```
+
 ![image](https://github.com/BestoEpe/traficlight-project/assets/91182619/b317d73d-2462-4f9f-a7e1-eb1c42e50cac)
 
 
