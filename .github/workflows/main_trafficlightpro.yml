@@ -11,27 +11,37 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - name: Set up Node.js version
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18.x'
-
-      - name: npm install, build, and test
+      # Build and deploy frontend (client)
+      - name: Build and deploy frontend
         run: |
+          cd client
           npm install
-          npm run build --if-present
-          npm run test --if-present
-      
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
+          npm run build
+
+      # Build and deploy backend (server)
+      - name: Build and deploy backend
+        run: |
+          cd server
+          npm install
+          npm run build
+
+      - name: Upload frontend artifact for deployment job
+        uses: actions/upload-artifact@v2
         with:
-          name: node-app
-          path: .
+          name: client-app
+          path: client/build
+
+      - name: Upload backend artifact for deployment job
+        uses: actions/upload-artifact@v2
+        with:
+          name: server-app
+          path: server/build
 
   deploy:
     runs-on: ubuntu-latest
@@ -41,16 +51,28 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v3
+      - name: Download frontend artifact from build job
+        uses: actions/download-artifact@v2
         with:
-          name: node-app
+          name: client-app
+
+      - name: Download backend artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: server-app
       
-      - name: 'Deploy to Azure Web App'
+      - name: 'Deploy frontend to Azure Web App'
         uses: azure/webapps-deploy@v2
-        id: deploy-to-webapp
         with:
           app-name: 'TrafficlightPro'
           slot-name: 'Production'
-          package: .
+          package: ${{ github.workspace }}/client/build
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C5DF583BD304445A806D75FE776D7163 }}
+
+      - name: 'Deploy backend to Azure Web App'
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'TrafficlightPro'
+          slot-name: 'Production'
+          package: ${{ github.workspace }}/server/build
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C5DF583BD304445A806D75FE776D7163 }}
