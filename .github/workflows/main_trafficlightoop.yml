@@ -53,4 +53,4 @@ jobs:
           app-name: 'trafficlightoop'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_281777BE9B564528914B68C87F95F4C3 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_51677A2CD1CF4F5CA47562ED3FDF1D4D }}
