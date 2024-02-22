@@ -17,26 +17,34 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Build and deploy frontend (client)
+      # Install npm dependencies for frontend (client)
+      - name: Install frontend dependencies
+        working-directory: client
+        run: npm install
+
+      # Install npm dependencies for backend (server)
+      - name: Install backend dependencies
+        working-directory: server
+        run: npm install
+
+      # Build frontend (client)
       - name: Build frontend
-        run: |
-          cd client
-          npm install
-          npm run build
+        working-directory: client
+        run: npm run build
 
-      # Build and deploy backend (server)
+      # Build backend (server)
       - name: Build backend
-        run: |
-          cd server
-          npm install
-          npm run build
+        working-directory: server
+        run: npm run build
 
+      # Upload frontend artifact for deployment job
       - name: Upload frontend artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: client-app
           path: client/build
 
+      # Upload backend artifact for deployment job
       - name: Upload backend artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
