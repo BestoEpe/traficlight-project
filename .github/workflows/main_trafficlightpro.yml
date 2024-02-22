@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code
@@ -20,10 +20,12 @@ jobs:
           node-version: '18.x'
 
       - name: Install backend dependencies
+        shell: bash
         working-directory: server
         run: npm install
 
       - name: Build backend
+        shell: bash
         working-directory: server
         run: npm run build
 
@@ -33,10 +35,12 @@ jobs:
           node-version: '18.x'
           
       - name: Install frontend dependencies
+        shell: bash
         working-directory: client
         run: npm install
 
       - name: Build frontend
+        shell: bash
         working-directory: client
         run: npm run build
 
@@ -53,7 +57,7 @@ jobs:
           path: client/build # Assuming frontend is built into 'build' folder
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     environment:
       name: 'Production'
