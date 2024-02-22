@@ -11,63 +11,65 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v4
-
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
       # Backend (Server) Build
       - name: Set up Node.js for Backend
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          node-version: '14.x' # Choose the appropriate version
+          node-version: '14.x'
       - name: Install Backend Dependencies
         run: npm install
       - name: Build Backend
         run: npm run build --if-present
       - name: Test Backend
         run: npm run test --if-present
-
+      
       # Frontend (Client) Build
       - name: Set up Node.js for Frontend
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          node-version: '14.x' # Choose the appropriate version
+          node-version: '14.x'
       - name: Install Frontend Dependencies
         run: |
-          cd client # Assuming frontend code is in a 'client' directory
+          cd client
           npm install
       - name: Build Frontend
         run: |
-          cd client # Assuming frontend code is in a 'client' directory
+          cd client
           npm run build --if-present
 
       # Upload Backend artifact for deployment job
       - name: Upload Backend artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: backend
           path: .
+          if-no-files-found: error
 
       # Upload Frontend artifact for deployment job
       - name: Upload Frontend artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: frontend
-          path: client/build # Assuming frontend build output is in 'client/build' directory
+          path: client/build
+          if-no-files-found: error
 
   deploy:
     runs-on: windows-latest
     needs: build
     environment:
       name: 'Production'
-      url: ${{ secrets.AZURE_WEB_APP_URL }}
     
     steps:
       - name: Download Backend artifact from build job
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           name: backend
-      
+
       - name: Download Frontend artifact from build job
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           name: frontend
       
