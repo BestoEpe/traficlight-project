@@ -12,6 +12,26 @@ const TrafficLight = ({ lightId }) => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [remainingTime, setRemainingTime] = useState(0);
 
+  const startTimer = (seconds) => {
+    if (intervalId) clearInterval(intervalId);
+    setColor('off');
+    setMode('time');
+    setRemainingTime(seconds);
+    const milliseconds = seconds * 1000;
+    const newIntervalId = setInterval(() => {
+      setRemainingTime(prevTime => {
+        const newTime = prevTime - 1;
+        if (newTime === 0) {
+          clearInterval(newIntervalId);
+          setMode('normal');
+        }
+        updateState(lightId, color, 'time', newTime);
+        return newTime;
+      });
+    }, 1000);
+    setIntervalId(newIntervalId);
+  };
+
   useEffect(() => {
     fetchState(lightId).then(data => {
       if (data) {
@@ -32,26 +52,6 @@ const TrafficLight = ({ lightId }) => {
 
   useEffect(() => {
     if (intervalId) clearInterval(intervalId);
-
-    const startTimer = (seconds) => {
-      if (intervalId) clearInterval(intervalId);
-      setColor('off');
-      setMode('time');
-      setRemainingTime(seconds);
-      const milliseconds = seconds * 1000;
-      const newIntervalId = setInterval(() => {
-        setRemainingTime(prevTime => {
-          const newTime = prevTime - 1;
-          if (newTime === 0) {
-            clearInterval(newIntervalId);
-            setMode('normal');
-          }
-          updateState(lightId, color, 'time', newTime);
-          return newTime;
-        });
-      }, 1000);
-      setIntervalId(newIntervalId);
-    };
 
     if (mode === 'normal') {
       const newIntervalId = startNormalMode(setColor, setMode, lightId, updateState);
