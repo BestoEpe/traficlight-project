@@ -1,6 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and deploy Node.js app to Azure Web App - TrafficlightPro
 
 on:
@@ -16,41 +13,67 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Node.js version
+      # Backend (Server) Build
+      - name: Set up Node.js for Backend
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
+          node-version: '14.x' # Choose the appropriate version
+      - name: Install Backend Dependencies
+        run: npm install
+      - name: Build Backend
+        run: npm run build --if-present
+      - name: Test Backend
+        run: npm run test --if-present
 
-      - name: npm install, build, and test
+      # Frontend (Client) Build
+      - name: Set up Node.js for Frontend
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14.x' # Choose the appropriate version
+      - name: Install Frontend Dependencies
         run: |
+          cd client # Assuming frontend code is in a 'client' directory
           npm install
+      - name: Build Frontend
+        run: |
+          cd client # Assuming frontend code is in a 'client' directory
           npm run build --if-present
-          npm run test --if-present
-      
-      - name: Upload artifact for deployment job
+
+      # Upload Backend artifact for deployment job
+      - name: Upload Backend artifact
         uses: actions/upload-artifact@v3
         with:
-          name: node-app
+          name: backend
           path: .
 
+      # Upload Frontend artifact for deployment job
+      - name: Upload Frontend artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend
+          path: client/build # Assuming frontend build output is in 'client/build' directory
+
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     environment:
       name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+      url: ${{ secrets.AZURE_WEB_APP_URL }}
     
     steps:
-      - name: Download artifact from build job
+      - name: Download Backend artifact from build job
         uses: actions/download-artifact@v3
         with:
-          name: node-app
+          name: backend
       
-      - name: 'Deploy to Azure Web App'
+      - name: Download Frontend artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: frontend
+      
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
-        id: deploy-to-webapp
         with:
           app-name: 'TrafficlightPro'
-          slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_AF4C785166294F9283BBA289830F7C90 }}
+          publish-profile: ${{ secrets.AZURE_WEB_APP_PUBLISH_PROFILE }}
