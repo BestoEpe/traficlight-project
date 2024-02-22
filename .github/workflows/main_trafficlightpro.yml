@@ -74,7 +74,7 @@ jobs:
         with:
           app-name: 'TrafficlightPro'
           slot-name: 'Production'
-          package: ${{ github.workspace }}/client/build
+          package: ${{ github.workspace }}/client-app
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C5DF583BD304445A806D75FE776D7163 }}
 
       - name: 'Deploy backend to Azure Web App'
@@ -82,5 +82,5 @@ jobs:
         with:
           app-name: 'TrafficlightPro'
           slot-name: 'Production'
-          package: ${{ github.workspace }}/server/build
+          package: ${{ github.workspace }}/server-app
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C5DF583BD304445A806D75FE776D7163 }}
