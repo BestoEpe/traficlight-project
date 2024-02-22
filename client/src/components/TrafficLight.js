@@ -17,7 +17,6 @@ const TrafficLight = ({ lightId }) => {
     setColor('off');
     setMode('time');
     setRemainingTime(seconds);
-    const milliseconds = seconds * 1000;
     const newIntervalId = setInterval(() => {
       setRemainingTime(prevTime => {
         const newTime = prevTime - 1;
@@ -48,7 +47,7 @@ const TrafficLight = ({ lightId }) => {
       console.error('Error retrieving last saved state:', error);
       setIsDataFetched(true);
     });
-  }, [lightId]);
+  }, [lightId, startTimer]); // Include startTimer in the dependency array
 
   useEffect(() => {
     if (intervalId) clearInterval(intervalId);
@@ -67,7 +66,7 @@ const TrafficLight = ({ lightId }) => {
       setMode('normal');
       setRemainingTime(0);
     }
-  }, [mode, isDataFetched, color, lightId, selectedTime, remainingTime, intervalId]);
+  }, [mode, isDataFetched, color, lightId, selectedTime, remainingTime, intervalId, startTimer]); // Include startTimer in the dependency array
 
   const handleChangeColor = (newColor) => {
     if (intervalId) clearInterval(intervalId);
