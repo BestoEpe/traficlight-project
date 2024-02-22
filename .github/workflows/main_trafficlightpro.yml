@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout repository
@@ -20,12 +20,16 @@ jobs:
       # Install npm dependencies for frontend (client)
       - name: Install frontend dependencies
         working-directory: client
-        run: npm install
+        run: |
+          npm install
+          npm audit fix --force
 
       # Install npm dependencies for backend (server)
       - name: Install backend dependencies
         working-directory: server
-        run: npm install
+        run: |
+          npm install
+          npm audit fix --force
 
       # Build frontend (client)
       - name: Build frontend
@@ -74,7 +78,7 @@ jobs:
         with:
           app-name: 'TrafficlightPro'
           slot-name: 'Production'
-          package: ${{ github.workspace }}/client-app
+          package: ${{ github.workspace }}/client/build
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C5DF583BD304445A806D75FE776D7163 }}
 
       - name: 'Deploy backend to Azure Web App'
@@ -82,5 +86,5 @@ jobs:
         with:
           app-name: 'TrafficlightPro'
           slot-name: 'Production'
-          package: ${{ github.workspace }}/server-app
+          package: ${{ github.workspace }}/server/build
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C5DF583BD304445A806D75FE776D7163 }}
