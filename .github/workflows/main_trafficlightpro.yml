@@ -1,4 +1,4 @@
-name: Build and deploy Full-Stack Node.js App to Azure Web App - TrafficlightPro
+name: Build and deploy Node.js app to Azure Web App - TrafficlightPro
 
 on:
   push:
@@ -11,81 +11,69 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
-      - name: Setup Node.js 18.x for backend
+      - uses: actions/checkout@v4
+
+      # Backend (Server) Build
+      - name: Set up Node.js for Backend
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
-
-      - name: Install backend dependencies
-        shell: bash
-        working-directory: server
+          node-version: '14.x' # Choose the appropriate version
+      - name: Install Backend Dependencies
         run: npm install
+      - name: Build Backend
+        run: npm run build --if-present
+      - name: Test Backend
+        run: npm run test --if-present
 
-      - name: Build backend
-        shell: bash
-        working-directory: server
-        run: npm run build
-
-      - name: Setup Node.js 18.x for frontend
+      # Frontend (Client) Build
+      - name: Set up Node.js for Frontend
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
-          
-      - name: Install frontend dependencies
-        shell: bash
-        working-directory: client
-        run: npm install
+          node-version: '14.x' # Choose the appropriate version
+      - name: Install Frontend Dependencies
+        run: |
+          cd client # Assuming frontend code is in a 'client' directory
+          npm install
+      - name: Build Frontend
+        run: |
+          cd client # Assuming frontend code is in a 'client' directory
+          npm run build --if-present
 
-      - name: Build frontend
-        shell: bash
-        working-directory: client
-        run: npm run build
-
-      - name: Upload backend artifact
-        uses: actions/upload-artifact@v2
+      # Upload Backend artifact for deployment job
+      - name: Upload Backend artifact
+        uses: actions/upload-artifact@v3
         with:
           name: backend
-          path: server/dist # Assuming backend is built into 'dist' folder
+          path: .
 
-      - name: Upload frontend artifact
-        uses: actions/upload-artifact@v2
+      # Upload Frontend artifact for deployment job
+      - name: Upload Frontend artifact
+        uses: actions/upload-artifact@v3
         with:
           name: frontend
-          path: client/build # Assuming frontend is built into 'build' folder
+          path: client/build # Assuming frontend build output is in 'client/build' directory
 
   deploy:
     runs-on: windows-latest
     needs: build
     environment:
       name: 'Production'
-      url: ${{ secrets.AZURE_WEBAPP_URL }} # Adjust with your actual Azure Web App URL
-
+      url: ${{ secrets.AZURE_WEB_APP_URL }}
+    
     steps:
-      - name: Download backend artifact
-        uses: actions/download-artifact@v2
+      - name: Download Backend artifact from build job
+        uses: actions/download-artifact@v3
         with:
           name: backend
-
-      - name: Download frontend artifact
-        uses: actions/download-artifact@v2
+      
+      - name: Download Frontend artifact from build job
+        uses: actions/download-artifact@v3
         with:
           name: frontend
-
-      - name: Deploy to Azure Web App - Backend
+      
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'TrafficlightPro'
-          slot-name: 'Production'
-          package: backend
-          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }} # Adjust with your actual Azure Publish Profile secret
-
-      - name: Deploy to Azure Web App - Frontend
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'TrafficlightPro'
-          slot-name: 'Production'
-          package: frontend
-          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }} # Adjust with your actual Azure Publish Profile secret
+          package: .
+          publish-profile: ${{ secrets.AZURE_WEB_APP_PUBLISH_PROFILE }}
