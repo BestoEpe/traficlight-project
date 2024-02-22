@@ -13,27 +13,45 @@ const TrafficLight = ({ lightId }) => {
   const [remainingTime, setRemainingTime] = useState(0);
 
   useEffect(() => {
-    fetchState(lightId)
-      .then(data => {
-        if (data) {
-          setColor(data.color || 'off');
-          setMode(data.mode || 'manual');
-          setSelectedTime(data.selectedTime || null);
-          setRemainingTime(data.selectedTime || 0);
-          if (data.selectedTime && data.mode === 'time') {
-            startTimer(data.selectedTime);
-          }
+    fetchState(lightId).then(data => {
+      if (data) {
+        setColor(data.color || 'off');
+        setMode(data.mode || 'manual');
+        setSelectedTime(data.selectedTime || null);
+        setRemainingTime(data.selectedTime || 0); 
+        if (data.selectedTime && data.mode === 'time') {
+          startTimer(data.selectedTime);
         }
-        setIsDataFetched(true);
-      })
-      .catch(error => {
-        console.error('Error retrieving last saved state:', error);
-        setIsDataFetched(true);
-      });
+      }
+      setIsDataFetched(true);
+    }).catch(error => {
+      console.error('Error retrieving last saved state:', error);
+      setIsDataFetched(true);
+    });
   }, [lightId]);
 
   useEffect(() => {
     if (intervalId) clearInterval(intervalId);
+
+    const startTimer = (seconds) => {
+      if (intervalId) clearInterval(intervalId);
+      setColor('off');
+      setMode('time');
+      setRemainingTime(seconds);
+      const milliseconds = seconds * 1000;
+      const newIntervalId = setInterval(() => {
+        setRemainingTime(prevTime => {
+          const newTime = prevTime - 1;
+          if (newTime === 0) {
+            clearInterval(newIntervalId);
+            setMode('normal');
+          }
+          updateState(lightId, color, 'time', newTime);
+          return newTime;
+        });
+      }, 1000);
+      setIntervalId(newIntervalId);
+    };
 
     if (mode === 'normal') {
       const newIntervalId = startNormalMode(setColor, setMode, lightId, updateState);
@@ -91,25 +109,6 @@ const TrafficLight = ({ lightId }) => {
       startTimer(sliderValue);
       sendSelectedTimeToDatabase();
     }
-  };
-
-  const startTimer = (seconds) => {
-    if (intervalId) clearInterval(intervalId);
-    setColor('off');
-    setMode('time');
-    setRemainingTime(seconds);
-    const newIntervalId = setInterval(() => {
-      setRemainingTime(prevTime => {
-        const newTime = prevTime - 1;
-        if (newTime === 0) {
-          clearInterval(newIntervalId);
-          setMode('normal');
-        }
-        updateState(lightId, color, 'time', newTime);
-        return newTime;
-      });
-    }, 1000);
-    setIntervalId(newIntervalId);
   };
 
   return (
