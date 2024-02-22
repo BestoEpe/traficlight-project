@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './TrafficLight.css';
 import { fetchState, updateState } from './TrafficStateHandler';
 import { startNormalMode, startFlickeringMode } from './TrafficModes';
@@ -12,7 +12,7 @@ const TrafficLight = ({ lightId }) => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [remainingTime, setRemainingTime] = useState(0);
 
-  const startTimer = (seconds) => {
+  const startTimer = useCallback((seconds) => {
     if (intervalId) clearInterval(intervalId);
     setColor('off');
     setMode('time');
@@ -29,7 +29,7 @@ const TrafficLight = ({ lightId }) => {
       });
     }, 1000);
     setIntervalId(newIntervalId);
-  };
+  }, [intervalId, lightId, color]);
 
   useEffect(() => {
     fetchState(lightId).then(data => {
@@ -47,7 +47,7 @@ const TrafficLight = ({ lightId }) => {
       console.error('Error retrieving last saved state:', error);
       setIsDataFetched(true);
     });
-  }, [lightId, startTimer]); // Include startTimer in the dependency array
+  }, [lightId, startTimer]);
 
   useEffect(() => {
     if (intervalId) clearInterval(intervalId);
@@ -66,7 +66,7 @@ const TrafficLight = ({ lightId }) => {
       setMode('normal');
       setRemainingTime(0);
     }
-  }, [mode, isDataFetched, color, lightId, selectedTime, remainingTime, intervalId, startTimer]); // Include startTimer in the dependency array
+  }, [mode, isDataFetched, color, lightId, selectedTime, remainingTime, intervalId, startNormalMode, startFlickeringMode, startTimer]);
 
   const handleChangeColor = (newColor) => {
     if (intervalId) clearInterval(intervalId);
