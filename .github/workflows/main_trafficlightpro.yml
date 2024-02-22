@@ -21,10 +21,13 @@ jobs:
           node-version: '14.x'
       - name: Install Backend Dependencies
         run: npm install
+        working-directory: server   # Change directory to server where backend package.json is located
       - name: Build Backend
         run: npm run build --if-present
+        working-directory: server   # Make sure to run build commands in the server directory
       - name: Test Backend
         run: npm run test --if-present
+        working-directory: server   # Make sure to run test commands in the server directory
       
       # Frontend (Client) Build
       - name: Set up Node.js for Frontend
@@ -45,7 +48,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: backend
-          path: .
+          path: server   # Upload backend artifacts from the server directory
           if-no-files-found: error
 
       # Upload Frontend artifact for deployment job
