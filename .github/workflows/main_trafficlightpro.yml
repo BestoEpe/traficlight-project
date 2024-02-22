@@ -30,16 +30,12 @@ jobs:
       # Build frontend (client)
       - name: Build frontend
         working-directory: client
-        run: |
-          npm install
-          npm run build
+        run: npm run build
 
       # Build backend (server)
       - name: Build backend
         working-directory: server
-        run: |
-          npm install
-          npm run build
+        run: npm run build
 
       # Upload frontend artifact for deployment job
       - name: Upload frontend artifact for deployment job
