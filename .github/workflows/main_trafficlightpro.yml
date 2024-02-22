@@ -18,14 +18,14 @@ jobs:
         uses: actions/checkout@v2
 
       # Build and deploy frontend (client)
-      - name: Build and deploy frontend
+      - name: Build frontend
         run: |
           cd client
           npm install
           npm run build
 
       # Build and deploy backend (server)
-      - name: Build and deploy backend
+      - name: Build backend
         run: |
           cd server
           npm install
