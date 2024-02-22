@@ -66,7 +66,7 @@ const TrafficLight = ({ lightId }) => {
       setMode('normal');
       setRemainingTime(0);
     }
-  }, [mode, isDataFetched, color, lightId, selectedTime, remainingTime, intervalId, startNormalMode, startFlickeringMode, startTimer]);
+  }, [mode, isDataFetched, color, lightId, selectedTime, remainingTime, intervalId, startTimer]);
 
   const handleChangeColor = (newColor) => {
     if (intervalId) clearInterval(intervalId);
