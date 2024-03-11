@@ -58,6 +58,9 @@ docker build -t server .
 ![image](https://github.com/BestoEpe/traficlight-project/assets/91182619/e5da9cdb-3f3b-4dc2-988e-49c5fb3ac184)
 
 
+![image](https://github.com/BestoEpe/traficlight-project/assets/91182619/5f9a0fb7-5f45-4b09-a8f5-7e666b55726b)
+
+
 
 
 
