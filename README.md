@@ -50,6 +50,14 @@ docker build -t server .
 
 
 
+### Cypress
+
+![image](https://github.com/BestoEpe/traficlight-project/assets/91182619/92de289c-d75d-4b1b-8e69-16783b854e67)
+
+
+
+
+
 
 
 
